@@ -11,6 +11,7 @@ using namespace std;
 #define S_u(x) Sum_sharp_less_than_u(x)
 #define add(x,y) Add_less_than_u(x,y)
 #define add2(x,y) Add_ltu_2d(x,y)
+#define ass All_Subset_Sums(set<int> X, int upper_bound_u)
 
 // 定义后需要用到的一些基本的函数 
 // 和函数 
@@ -59,7 +60,20 @@ set<vector<int, int> >  All_Subset_Sums(set<int> X, int upper_bound_u){
 		result.insert(vector<int, int>(*X.begin(),1));
 		return result; 
 	}else{
-		
+		// 令 T 为 S 的任意一个 基数为 n/2的子集
+		set<int> T<int>;
+		set<int>::iterator it;
+		int count = 0; 
+		int n_2 = X.size()/2;
+		for (it = X.begin(); it != X.end(); it++,count++){
+    	//	cout<<*it<<" ";        // 随时为测试做准备 
+    		if(count == n_2){
+    			break;
+			}
+    		T.insert(it);
+    		S.erase(it);
+    	}
+    	return add2(ass(T,u),ass(S,u));
 	}
 } 
 int main(){
