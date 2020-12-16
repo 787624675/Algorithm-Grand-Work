@@ -2,21 +2,23 @@
 #include <vector>
 #include <set>
 #include <math.h>
+#include <algorithm>
+
 using namespace std;
 
-// ÎªÁË¼ò»¯´úÂë£¬¶¨ÒåÒ»Ð©ºê 
-// Ô­À´µÄº¯ÊýÃû½ÏÎª¸´ÔÓ£¬ÊÇÎªÁË¡°¼ûÃûÖªÒâ¡± 
+// Îªï¿½Ë¼ò»¯´ï¿½ï¿½ë£¬ï¿½ï¿½ï¿½ï¿½Ò»Ð©ï¿½ï¿½ 
+// Ô­ï¿½ï¿½ï¿½Äºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½Ó£ï¿½ï¿½ï¿½Îªï¿½Ë¡ï¿½ï¿½ï¿½ï¿½ï¿½Öªï¿½â¡± 
 #define u upper_bound_u
 #define S(x) Sum_X(x)
 #define Su(x,y) Sum_less_than_u(x,y)
 #define S_u(x,y) Sum_sharp_less_than_u(x,y)
 #define add(x,y) Add_less_than_u(x,y)
 #define add2(x,y) Add_ltu_2d(x,y)
-#define asss(x,y) All_Subset_Sums_sharp(x,y)
-#define ass(x,y) All_Subset_Sums(x,y)
+#define asss(w,z) All_Subset_Sums_sharp(w,z)
+#define ass(w,z) All_Subset_Sums(w,z)
 
-// ¶¨ÒåºóÐèÒªÓÃµ½µÄÒ»Ð©»ù±¾µÄº¯Êý 
-// ºÍº¯Êý 
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½Ãµï¿½ï¿½ï¿½Ò»Ð©ï¿½ï¿½ï¿½ï¿½ï¿½Äºï¿½ï¿½ï¿½ 
+// ï¿½Íºï¿½ï¿½ï¿½ 
 int Sum_X(set<int> X){
 	set<int>::iterator it;
 	int sum = 0;
@@ -33,66 +35,69 @@ int max_x(set<int> X){
 	int max = 0;
     for (it = X.begin(); it != X.end(); it++){
     	// cout<<*it<<" ";
-    	if(p*it > max){
+    	if(*it > max){
     		max = *it;
 		}
     }
     return max;
 }
-// ÇóºÍÐ¡ÓÚuµÄ×Ó¼¯ºÏ 
-// ²ÎÊýÐÅÏ¢£º
-// ÊäÈë£º¼¯ºÏX
-// Êä³ö£ºX µÄËùÓÐ×Ó¼¯ Y µÄÔªËØÖ®ºÍ 
+// ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½uï¿½ï¿½ï¿½Ó¼ï¿½ï¿½ï¿½ 
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½
+// ï¿½ï¿½ï¿½ë£ºï¿½ï¿½ï¿½ï¿½X
+// ï¿½ï¿½ï¿½ï¿½ï¿½X ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¼ï¿½ Y ï¿½ï¿½Ôªï¿½ï¿½Ö®ï¿½ï¿½ 
 set<int> Sum_less_than_u(set<int> X, int u){
 	// TODO: Please implement me;
 }
-// ÇóºÍÐ¡ÓÚuµÄ×Ó¼¯ºÏ,²¢±íÊ¾ÎªÏòÁ¿ (Sum_Y_i, cardinality) µÄÐÎÊ½ 
-// ²ÎÊýÐÅÏ¢£º
-// ÊäÈë£º¼¯ºÏX
-// Êä³ö£ºÏòÁ¿µÄ¼¯ºÏ£¬ÏòÁ¿°üº¬Á½¸öÐÅÏ¢£º
-// 1. X µÄ×Ó¼¯ Y_i µÄÔªËØÖ®ºÍ 
-// 2. Y_i µÄ »ùÊý 
+// ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½uï¿½ï¿½ï¿½Ó¼ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½Ê¾Îªï¿½ï¿½ï¿½ï¿½ (Sum_Y_i, cardinality) ï¿½ï¿½ï¿½ï¿½Ê½ 
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½
+// ï¿½ï¿½ï¿½ë£ºï¿½ï¿½ï¿½ï¿½X
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½Ï£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½
+// 1. X ï¿½ï¿½ï¿½Ó¼ï¿½ Y_i ï¿½ï¿½Ôªï¿½ï¿½Ö®ï¿½ï¿½ 
+// 2. Y_i ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 
 set< vector< int, int> > Sum_sharp_less_than_u(set<int> X, int u){
 	// TODO: Please implement me;
 }
-// ¹¹ÔìÒ»¸ö¼¯ºÏ£¬ÔªËØÎª£ºElement_i = X_i + Y_j <= u ? X_i + Y_j : u;  
+// ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Ï£ï¿½Ôªï¿½ï¿½Îªï¿½ï¿½Element_i = X_i + Y_j <= u ? X_i + Y_j : u;  
 set<int> Add_less_than_u(set<int> X, set<int> Y){
 	// TODO: Please implement me;
 	
 }
-// ÉÏÃæº¯ÊýµÄ¶þÎ¬ÐÎÊ½ 
-set<vector<int, int> > Add_ltu_2d(set<int, int> X, set<int, int> Y){
+// ï¿½ï¿½ï¿½æº¯ï¿½ï¿½ï¿½Ä¶ï¿½Î¬ï¿½ï¿½Ê½ 
+set<vector<int> > Add_ltu_2d(set<vector<int> > X, set<vector<int> > Y){
 	// TODO: Please implement me;
 	
 }
 // General function 
-set<vector<int, int> >  All_Subset_Sums_sharp(set<int> X, int upper_bound_u){
+set<vector<int> >  All_Subset_Sums_sharp(set<int> X, int upper_bound_u){
 	if(X.size() == 1){
-		set<vector<int, int> > result;
-		result.insert(vector<int, int>(0,0));
-		result.insert(vector<int, int>(*X.begin(),1));
+		set<vector<int> > result;
+		result.insert(vector<int>(2,0));
+		vector<int> temp; 
+		temp.push_back(*X.begin());
+		temp.push_back(1);
+		result.insert(temp);
 		return result; 
 	}else{
-		// Áî T Îª S µÄÈÎÒâÒ»¸ö »ùÊýÎª n/2µÄ×Ó¼¯
-		set<int> T<int>;
+		// ï¿½ï¿½ T Îª S ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Îª n/2ï¿½ï¿½ï¿½Ó¼ï¿½
+		set<int> T;
 		set<int>::iterator it;
 		int count = 0; 
 		int n_2 = X.size()/2;
 		for (it = X.begin(); it != X.end(); it++,count++){
-    	//	cout<<*it<<" ";        // ËæÊ±Îª²âÊÔ×ö×¼±¸ 
+    	//	cout<<*it<<" ";        // ï¿½ï¿½Ê±Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×¼ï¿½ï¿½ 
     		if(count == n_2){
     			break;
 			}
-    		T.insert(it);
-    		S.erase(it);
+    		T.insert(*it);
+    		X.erase(*it);
     	}
-    	return add2(asss(T,u),asss(S,u));
+    	return add2(asss(T,u),asss(X,u));
 	}
 } 
-set<vector<int, int> >  All_Subset_Sums(set<int> X, int upper_bound_u){
+set<vector<int> >  All_Subset_Sums(set<int> X, int upper_bound_u){
 	int n = X.size();
-	int b = aqrt(n*log(n));
-	vector<set<vector<int, int> > > R;
+	int b = sqrt(n*log(n));
+	vector<set<vector<int> > > R;
 	for(int i = 0 ;i < b; i++){
 		set<int> S_i;
 		set<int> Q_i;
@@ -104,20 +109,23 @@ set<vector<int, int> >  All_Subset_Sums(set<int> X, int upper_bound_u){
 			Smns.insert(smn);
 			smn += b;
 		}
-		// È¡½»¼¯ 
+		// È¡ï¿½ï¿½ï¿½ï¿½ 
 		set_intersection(X.begin(),X.end(),Smns.begin(),Smns.end(),inserter(S_i,S_i.end()));
-		set::iterator it_s_i ;
+		set<int>::iterator it_s_i ;
 		for (it_s_i = S_i.begin(); it_s_i != S_i.end(); it_s_i++){
     		// cout<<*it_s_i<<" ";
     		Q_i.insert((*it_s_i - i)/b);	
     	}
-    	int subqi = asss(Q_i, u/b);
-    	set::iterator it_subqi ;
+    	set<vector<int> > subqi = asss(Q_i, u/b);
+    	set<vector<int> >::iterator it_subqi ;
     	
 		for (it_subqi = subqi.begin(); it_subqi != subqi.end(); it_subqi++){
     		// cout<<*it_s_i<<" ";
-    		set<vector<int, int> > temp;
-    		temp.insert(vector<int, int>((*it_subqi)[0]*b, (*it_subqi)[1]*i));
+    		set<vector<int> > temp;
+    		vector<int> temp_vector;
+    		temp_vector.push_back((*it_subqi)[0]*b);
+    		temp_vector.push_back((*it_subqi)[1]*i);
+    		temp.insert(temp_vector);
     		R.push_back(temp);
     	}
 	}
