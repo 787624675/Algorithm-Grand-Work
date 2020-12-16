@@ -6,10 +6,7 @@
 
 using namespace std;
 
-
 #define S(x) Sum_X(x)
-#define Su(x,y) Sum_less_than_u(x,y)
-#define S_u(x,y) Sum_sharp_less_than_u(x,y)
 #define add(x,y,z) Add_less_than_u(x,y,z)
 #define add2(x,y) Add_ltu_2d(x,y)
 #define asss(w,z) All_Subset_Sums_sharp(w,z)
@@ -38,13 +35,6 @@ int max_x(set<int> X){
     return max;
 }
 
-set<int> Sum_less_than_u(set<int> X, int u){
-	// TODO: Please implement me;
-}
-
-set< vector< int> > Sum_sharp_less_than_u(set<int> X, int u){
-	// TODO: Please implement me;
-}
 // Element_i = X_i + Y_j <= u ? X_i + Y_j : u;  
 set<int> Add_less_than_u(set<int> X, set<int> Y, int u){
 	// TODO: Please implement me;
