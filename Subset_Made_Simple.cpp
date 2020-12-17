@@ -104,6 +104,7 @@ set<int> Add_less_than_u(set<int> X, set<int> Y, int u) {
 			result.insert(i);
 		}
 	}
+	len = 1;
 	return result;
 }
 
