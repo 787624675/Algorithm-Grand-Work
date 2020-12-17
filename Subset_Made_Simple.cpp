@@ -3,14 +3,47 @@
 #include <set>
 #include <math.h>
 #include <algorithm>
+#include <cmath>
+#include <cctype>
+#include <cstdio>
+#include <cstring>
 
 using namespace std;
 
-#define S(x) Sum_X(x)
-#define add(x,y,z) Add_less_than_u(x,y,z)
-#define add2(x,y) Add_ltu_2d(x,y)
-#define asss(w,z) All_Subset_Sums_sharp(w,z)
-#define ass(w,z) All_Subset_Sums(w,z)
+const int maxn = 2e6 + 5;
+const double pi = 3.1415926535898;
+int t, n, m, len = 1, l, r[maxn * 2];
+
+struct Cpx {  //����
+	double x, y;
+	Cpx(double t1 = 0, double t2 = 0) { x = t1, y = t2; }
+}A[maxn * 2], B[maxn * 2], C[maxn * 2];
+Cpx operator +(Cpx a, Cpx b) { return Cpx(a.x + b.x, a.y + b.y); }
+Cpx operator -(Cpx a, Cpx b) { return Cpx(a.x - b.x, a.y - b.y); }
+Cpx operator *(Cpx a, Cpx b) { return Cpx(a.x * b.x - a.y * b.y, a.x * b.y + a.y * b.x); }
+
+void fdft(Cpx* a, int n, int flag) {  
+	for (int i = 0; i < n; ++i) if (i < r[i]) swap(a[i], a[r[i]]);
+	for (int mid = 1; mid < n; mid <<= 1) {  
+		Cpx w1(cos(pi / mid), flag * sin(pi / mid)), x, y;
+		for (int j = 0; j < n; j += (mid << 1)) {  
+			Cpx w(1, 0);
+			for (int k = 0; k < mid; ++k, w = w * w1) {  
+				x = a[j + k], y = w * a[j + mid + k];
+				a[j + k] = x + y; a[j + mid + k] = x - y;
+			}
+		}
+	}
+}
+
+inline int getint(int& x) {
+	char c; int flag = 0;
+	for (c = getchar(); !isdigit(c); c = getchar())
+		if (c == '-') flag = 1;
+	for (x = c - 48; c = getchar(), isdigit(c);)
+		x = (x << 3) + (x << 1) + c - 48;
+	return flag ? x : -x;
+}
 
 int Sum_X(set<int> X){
 	set<int>::iterator it;
@@ -36,10 +69,42 @@ int max_x(set<int> X){
 }
 
 // Element_i = X_i + Y_j <= u ? X_i + Y_j : u;  
-set<int> Add_less_than_u(set<int> X, set<int> Y, int u){
-	// TODO: Please implement me;
+set<int> Add_less_than_u(set<int> X, set<int> Y, int u) {
 	set<int> result;
-	
+	int n, m; //n for X m for Y
+	n = *X.rbegin();
+	m = *Y.rbegin();
+	A[0].x = 0;
+	B[0].x = 0;
+	for (int i = 1; i <= n; i++) {
+		if (X.count(i)) {
+			A[i].x = 1;
+		}
+		else {
+			A[i].x = 0;
+		}
+	}
+	for (int i = 1; i <= m; i++) {
+		if (Y.count(i)) {
+			B[i].x = 1;
+		}
+		else {
+			B[i].x = 0;
+		}
+	}
+	while (len <= n + m) len <<= 1, ++l;
+	for (int i = 0; i < len; ++i)
+		r[i] = (r[i >> 1] >> 1) | ((i & 1) << (l - 1));
+	fdft(A, len, 1); fdft(B, len, 1);
+	for (int i = 0; i < len; ++i) C[i] = A[i] * B[i];
+	fdft(C, len, -1);
+	for (int i = 0; i <= u; ++i) {
+		//printf("%d ", int(C[i].x / len + 0.5));
+		if ( int(C[i].x / len + 0.5) !=0) {
+			result.insert(i);
+		}
+	}
+	return result;
 }
 
 set<vector<int> > Add_ltu_2d(set<vector<int> > X, set<vector<int> > Y){
