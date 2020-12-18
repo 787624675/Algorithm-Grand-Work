@@ -12,7 +12,7 @@ using namespace std;
 
 const int maxn = 2e6 + 5;
 const double pi = 3.1415926535898;
-int t, n, m, len = 1, l, r[maxn * 2];
+int r[maxn * 2];
 
 struct Cpx {  //����
 	double x, y;
@@ -36,14 +36,6 @@ void fdft(Cpx* a, int n, int flag) {
 	}
 }
 
-inline int getint(int& x) {
-	char c; int flag = 0;
-	for (c = getchar(); !isdigit(c); c = getchar())
-		if (c == '-') flag = 1;
-	for (x = c - 48; c = getchar(), isdigit(c);)
-		x = (x << 3) + (x << 1) + c - 48;
-	return flag ? x : -x;
-}
 
 int Sum_X(set<int> X){
 	set<int>::iterator it;
@@ -70,6 +62,7 @@ int max_x(set<int> X){
 
 // Element_i = X_i + Y_j <= u ? X_i + Y_j : u;  
 set<int> Add_less_than_u(set<int> X, set<int> Y, int u) {
+	int l=0, len = 1;
 	set<int> result;
 	int n, m; //n for X m for Y
 	n = *X.rbegin();
@@ -99,12 +92,20 @@ set<int> Add_less_than_u(set<int> X, set<int> Y, int u) {
 	for (int i = 0; i < len; ++i) C[i] = A[i] * B[i];
 	fdft(C, len, -1);
 	for (int i = 0; i <= u; ++i) {
-		//printf("%d ", int(C[i].x / len + 0.5));
 		if ( int(C[i].x / len + 0.5) !=0) {
 			result.insert(i);
 		}
 	}
 	len = 1;
+	for (int i = 0; i < maxn * 2; i++) {
+		r[i] = 0;
+		A[i].x = 0;
+		A[i].y = 0;
+		B[i].x = 0;
+		B[i].y = 0;
+		C[i].x = 0;
+		C[i].y = 0;
+	}
 	return result;
 }
 
