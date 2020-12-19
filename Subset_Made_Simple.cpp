@@ -10,6 +10,12 @@
 
 using namespace std;
 
+#define S(x) Sum_X(x)
+#define add(x,y,z) Add_less_than_u(x,y,z)
+#define add2(x,y) Add_ltu_2d(x,y)
+#define asss(w,z) All_Subset_Sums_sharp(w,z)
+#define ass(w,z) All_Subset_Sums(w,z)
+
 const int maxn = 2e6 + 5;
 const double pi = 3.1415926535898;
 int r[maxn * 2];
@@ -109,8 +115,7 @@ set<int> Add_less_than_u(set<int> X, set<int> Y, int u) {
 	return result;
 }
 
-set<vector<int> > Add_ltu_2d(set<vector<int> > X, set<vector<int> > Y){
-	// TODO: Please implement me;
+set<vector<int> > Add_ltu_2d(set<vector<int> > X, set<vector<int> > Y,int u){
 	
 }
 // General function 
@@ -137,7 +142,7 @@ set<vector<int> >  All_Subset_Sums_sharp(set<int> X, int u){
     		T.insert(*it);
     		X.erase(*it);
     	}
-    	return add2(asss(T,u),asss(X,u));
+    	return add2(asss(T,u),asss(X,u),u);
 	}
 } 
 set<int >  All_Subset_Sums(set<int> X, int u){
