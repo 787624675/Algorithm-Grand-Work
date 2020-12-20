@@ -7,12 +7,13 @@
 #include <cctype>
 #include <cstdio>
 #include <cstring>
+#include "fft2.hpp"
 
 using namespace std;
 
 #define S(x) Sum_X(x)
 #define add(x,y,z) Add_less_than_u(x,y,z)
-#define add2(x,y) Add_ltu_2d(x,y)
+#define add2(x,y,z) addusharp(x,y,z)
 #define asss(w,z) All_Subset_Sums_sharp(w,z)
 #define ass(w,z) All_Subset_Sums(w,z)
 
@@ -70,12 +71,19 @@ int max_x(set<int> X){
 set<int> Add_less_than_u(set<int> X, set<int> Y, int u) {
 	int l=0, len = 1;
 	set<int> result;
-	int n, m; //n for X m for Y
-	n = *X.rbegin();
-	m = *Y.rbegin();
-	A[0].x = 0;
-	B[0].x = 0;
-	for (int i = 1; i <= n; i++) {
+	int n ,m;
+	if(X.size() == 0){
+		n = 0;
+	}else{
+		n = *X.rbegin();
+	}
+	if(X.size() == 0){
+		m = 0;
+	}else{
+		m = *Y.rbegin();
+	}
+	
+	for (int i = 0; i <= n; i++) {
 		if (X.count(i)) {
 			A[i].x = 1;
 		}
@@ -83,7 +91,7 @@ set<int> Add_less_than_u(set<int> X, set<int> Y, int u) {
 			A[i].x = 0;
 		}
 	}
-	for (int i = 1; i <= m; i++) {
+	for (int i = 0; i <= m; i++) {
 		if (Y.count(i)) {
 			B[i].x = 1;
 		}
@@ -115,9 +123,7 @@ set<int> Add_less_than_u(set<int> X, set<int> Y, int u) {
 	return result;
 }
 
-set<vector<int> > Add_ltu_2d(set<vector<int> > X, set<vector<int> > Y,int u){
-	
-}
+extern set<vector<int> > addusharp(set<vector<int> > X, set<vector<int> > Y,int u);
 // General function 
 set<vector<int> >  All_Subset_Sums_sharp(set<int> X, int u){
 	if(X.size() == 1){
@@ -134,13 +140,13 @@ set<vector<int> >  All_Subset_Sums_sharp(set<int> X, int u){
 		set<int>::iterator it;
 		int count = 0; 
 		int n_2 = X.size()/2;
-		for (it = X.begin(); it != X.end(); it++,count++){
+		for (it = X.begin(); it != X.end();count++){
     	//	cout<<*it<<" ";        // 
     		if(count == n_2){
     			break;
 			}
     		T.insert(*it);
-    		X.erase(*it);
+    		X.erase(it++);
     	}
     	return add2(asss(T,u),asss(X,u),u);
 	}
@@ -169,13 +175,14 @@ set<int >  All_Subset_Sums(set<int> X, int u){
     	}
     	set<vector<int> > subqi = asss(Q_i, u/b);
     	set<vector<int> >::iterator it_subqi ;
-    	
+    	set<int> temp;
 		for (it_subqi = subqi.begin(); it_subqi != subqi.end(); it_subqi++){
     		// cout<<*it_s_i<<" ";
-    		set<int> temp;
+    		
     		temp.insert((*it_subqi)[0]*b + (*it_subqi)[1]*i);
-    		R.push_back(temp);
+    		
     	}
+		R.push_back(temp);
 	}
 	for(int i = 1; i<b; i++){
 		R[i] = add(R[i-1],R[i],u);
@@ -185,7 +192,7 @@ set<int >  All_Subset_Sums(set<int> X, int u){
 int main(){
 	set<int> X;
 	int input_x;
-	int num;
+	int num,u1;
 	cout<<"Please input the size of X:";
 	cin>>num;
 	cout<<endl;
@@ -193,7 +200,11 @@ int main(){
 		cin>>input_x;
 		X.insert(input_x);
 	}
-	int sum_result = Sum_X(X);
-	cout<<sum_result<<endl;
+	cout<<"u1:";
+	cin>>u1;
+	auto res = ass(X,u1);
+	for(auto it = res.begin();it!=res.end();it++){
+		cout<<*it<<" ";
+	}
 	
 } 
