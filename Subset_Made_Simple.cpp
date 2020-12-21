@@ -153,26 +153,15 @@ set<vector<int> >  All_Subset_Sums_sharp(set<int> X, int u){
 } 
 set<int >  All_Subset_Sums(set<int> X, int u){
 	int n = X.size();
-	int b = sqrt(n*log(n));
+	int b = sqrt(n*(log(n)/log(10)));
 	vector<set<int> > R;
 	for(int i = 0 ;i < b; i++){
-		set<int> S_i;
 		set<int> Q_i;
-		
-		set<int> Smns; // same_mod_nums
-		int max = max_x(X); 
-		int smn = abs(i - b); // same_mod_num
-		while(smn <= max){
-			Smns.insert(smn);
-			smn += b;
+		for(auto itx = X.begin(); itx!=X.end();itx++){
+			if((*itx)%b == i%b){
+				Q_i.insert(((*itx)-i)/b);
+			}
 		}
-		//
-		set_intersection(X.begin(),X.end(),Smns.begin(),Smns.end(),inserter(S_i,S_i.end()));
-		set<int>::iterator it_s_i ;
-		for (it_s_i = S_i.begin(); it_s_i != S_i.end(); it_s_i++){
-    		// cout<<*it_s_i<<" ";
-    		Q_i.insert((*it_s_i - i)/b);	
-    	}
     	set<vector<int> > subqi = asss(Q_i, u/b);
     	set<vector<int> >::iterator it_subqi ;
     	set<int> temp;
