@@ -153,7 +153,7 @@ set<vector<int> >  All_Subset_Sums_sharp(set<int> X, int u){
 } 
 set<int >  All_Subset_Sums(set<int> X, int u){
 	int n = X.size();
-	int b = sqrt(n*(log(n)/log(10)));
+	int b = sqrt(n*log(n));
 	vector<set<int> > R;
 	for(int i = 0 ;i < b; i++){
 		set<int> Q_i;
@@ -166,10 +166,7 @@ set<int >  All_Subset_Sums(set<int> X, int u){
     	set<vector<int> >::iterator it_subqi ;
     	set<int> temp;
 		for (it_subqi = subqi.begin(); it_subqi != subqi.end(); it_subqi++){
-    		// cout<<*it_s_i<<" ";
-    		
     		temp.insert((*it_subqi)[0]*b + (*it_subqi)[1]*i);
-    		
     	}
 		R.push_back(temp);
 	}
